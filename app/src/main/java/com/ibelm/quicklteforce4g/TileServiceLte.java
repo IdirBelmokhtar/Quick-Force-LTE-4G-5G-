@@ -49,15 +49,12 @@ public class TileServiceLte extends TileService {
             public void onClick(DialogInterface dialogInterface, int i) {
                 try {
                     Intent launchIntent = getPackageManager().getLaunchIntentForPackage("com.ibelm.quicklteforce4g");
-                    if (Build.VERSION.SDK_INT >= 30) {
-                        SharedPreferences.Editor editor = getSharedPreferences("PHONE", MODE_PRIVATE).edit();
-                        editor.putString("INFO", "true");
-                        editor.apply();
-                        launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
-                        startActivityAndCollapse(launchIntent);
-                    } else {
-                        Runtime.getRuntime().exec("am start --user 0 -n com.android.settings/.RadioInfo");
-                    }
+                    SharedPreferences.Editor editor = getSharedPreferences("PHONE", MODE_PRIVATE).edit();
+                    editor.putString("INFO", "true");
+                    editor.apply();
+                    launchIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivityAndCollapse(launchIntent);
+
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(getApplication(), "Your device is not compatible with this App, Inconvenience is regretted :(", Toast.LENGTH_LONG).show();

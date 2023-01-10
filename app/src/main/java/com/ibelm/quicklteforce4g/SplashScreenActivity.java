@@ -6,11 +6,14 @@ import androidx.core.os.BuildCompat;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.WindowManager;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+
+import java.io.IOException;
 
 public class SplashScreenActivity extends AppCompatActivity {
 
@@ -50,6 +53,15 @@ public class SplashScreenActivity extends AppCompatActivity {
         SharedPreferences prefs = getSharedPreferences("PHONE", MODE_PRIVATE);
         String info = prefs.getString("INFO", "");
         if (info.equals("true")){
+            if (Build.VERSION.SDK_INT >= 30) {
+                T();
+            } else {
+                //in Some phone this below not working
+                //V();
+                //try this :
+                V_();
+            }
+
             try {
                 Intent intent = new Intent("android.intent.action.MAIN");
                 intent.setClassName("com.android.phone", "com.android.phone.settings.RadioInfo");
@@ -83,6 +95,37 @@ public class SplashScreenActivity extends AppCompatActivity {
 
                 }
             }, SPLASH_SCREEN);
+        }
+    }
+
+    public final void T() {
+        try {
+            Intent intent = new Intent("android.intent.action.MAIN");
+            intent.setClassName("com.android.phone", "com.android.phone.settings.RadioInfo");
+            //intent.setClassName("com.android.phone", "com.android.phone.settings");
+            startActivity(intent);
+        } catch (Exception e10) {
+            e10.printStackTrace();
+        }
+    }
+
+    // Android 11-
+    public final void V() {
+        try {
+            Runtime.getRuntime().exec("am start --user 0 -n com.android.settings/.RadioInfo");
+        } catch (IOException e10) {
+            e10.printStackTrace();
+        }
+    }
+
+    public final void V_() {
+        try {
+            Intent intent = new Intent("android.intent.action.MAIN");
+            intent.setClassName("com.android.settings", "com.android.settings.RadioInfo");
+            startActivity(intent);
+        } catch (Exception e10) {
+            V();
+            e10.printStackTrace();
         }
     }
 }

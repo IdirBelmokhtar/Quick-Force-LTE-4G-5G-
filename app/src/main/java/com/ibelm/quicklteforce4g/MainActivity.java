@@ -85,7 +85,10 @@ public class MainActivity extends AppCompatActivity {
                 if (Build.VERSION.SDK_INT >= 30) {
                     T();
                 } else {
-                    V();
+                    //in Some phone this below not working
+                    //V();
+                    //try this :
+                    V_();
                 }
             }
         });
@@ -205,6 +208,17 @@ public class MainActivity extends AppCompatActivity {
         try {
             Runtime.getRuntime().exec("am start --user 0 -n com.android.settings/.RadioInfo");
         } catch (IOException e10) {
+            e10.printStackTrace();
+        }
+    }
+
+    public final void V_() {
+        try {
+            Intent intent = new Intent("android.intent.action.MAIN");
+            intent.setClassName("com.android.settings", "com.android.settings.RadioInfo");
+            startActivity(intent);
+        } catch (Exception e10) {
+            V();
             e10.printStackTrace();
         }
     }
